@@ -109,8 +109,7 @@ public class MainActivity extends Activity {
                     names.add(name);
                     nameValueMap.put(name, value);
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Log.e(TAG, "Ignoring " + field.getName() + " due to exception " + ex);
             }
         }
@@ -146,8 +145,7 @@ public class MainActivity extends Activity {
             }
         }
 
-
-        if (false && mData.getText().length() > 0) {
+        if (mData.getText().length() > 0) {
             try {
                 impIntent.setData(Uri.parse(mData.getText().toString()));
             } catch (Exception ex) {
@@ -167,8 +165,7 @@ public class MainActivity extends Activity {
 
         if (compName != null) {
             startActivity(impIntent);
-        }
-        else {
+        } else {
             Toast.makeText(this, "Resolution failed", Toast.LENGTH_LONG).show();
         }
     }
