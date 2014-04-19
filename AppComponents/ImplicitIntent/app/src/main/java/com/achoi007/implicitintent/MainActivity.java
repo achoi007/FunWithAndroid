@@ -16,15 +16,18 @@ import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends Activity {
 
     private static final String TAG = "com.achoi007.implicitintent.Main";
     private AutoCompleteTextView mAction, mCategory;
-    private TextView mComponent, mData;
+    private TextView mComponent, mData, mType;
+    private Map<String, String> mActionMap, mCategoryMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +38,16 @@ public class MainActivity extends Activity {
         mCategory = (AutoCompleteTextView) findViewById(R.id.categoryTxt);
         mComponent = (TextView) findViewById(R.id.componentTxt);
         mData = (TextView) findViewById(R.id.dataTxt);
+        mType = (TextView) findViewById(R.id.typeTxt);
 
         // Sets list of available actions
-        String[] actions = getListOfNames("ACTION");
+        mActionMap = new HashMap<String, String>();
+        String[] actions = getListOfNames("ACTION", mActionMap);
         setAdapterForView(mAction, actions);
 
         // Sets list of available categories
-        String[] categories = getListOfNames("CATEGORY");
+        mCategoryMap = new HashMap<String, String>();
+        String[] categories = getListOfNames("CATEGORY", mCategoryMap);
         setAdapterForView(mCategory, categories);
     }
 
@@ -78,12 +84,13 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * Gets an array of strings which are member variables of Intent matching given prefix_.
+     * Gets an array of strings which are member variables of Intent matching given prefix_.  Also
+     * populates name value map so that key = ACTION_|CATEGORY_|*, value is android.intent.*.*
      *
      * @param prefix
      * @return
      */
-    private String[] getListOfNames(String prefix) {
+    private String[] getListOfNames(String prefix, Map<String, String> nameValueMap) {
 
         // Get list of names via reflection, matching all fields with given prefix
         Class intentClass = Intent.class;
@@ -92,10 +99,19 @@ public class MainActivity extends Activity {
         prefix = prefix + "_";
         Log.d(TAG, prefix);
         for (Field field : fields) {
-            String name = field.getName();
-            if (name.startsWith(prefix)) {
-                Log.d(TAG, name);
-                names.add(name);
+            try {
+                String name = field.getName();
+                if (name.startsWith(prefix)) {
+
+                    // From name (ACTION_* or CATEGORY_*) to actual android.intent.action.*
+                    String value = field.get(null).toString();
+                    Log.d(TAG, name + "=>" + value);
+                    names.add(name);
+                    nameValueMap.put(name, value);
+                }
+            }
+            catch (Exception ex) {
+                Log.e(TAG, "Ignoring " + field.getName() + " due to exception " + ex);
             }
         }
 
@@ -115,14 +131,23 @@ public class MainActivity extends Activity {
         }
 
         if (mAction.getText().length() > 0) {
-            impIntent.setAction(mAction.getText().toString());
+            String name = mAction.getText().toString();
+            String value = mActionMap.get(name);
+            if (value != null) {
+                impIntent.setAction(value);
+            }
         }
 
         if (mCategory.getText().length() > 0) {
-            impIntent.addCategory(mCategory.getText().toString());
+            String name = mCategory.getText().toString();
+            String value = mCategoryMap.get(name);
+            if (value != null) {
+                impIntent.addCategory(value);
+            }
         }
 
-        if (mData.getText().length() > 0) {
+
+        if (false && mData.getText().length() > 0) {
             try {
                 impIntent.setData(Uri.parse(mData.getText().toString()));
             } catch (Exception ex) {
@@ -131,18 +156,20 @@ public class MainActivity extends Activity {
             }
         }
 
+        if (mType.getText().length() > 0) {
+            impIntent.setType(mType.getText().toString());
+        }
+
         Log.d(TAG, impIntent.toString());
 
         // Resolves implicit intent
         ComponentName compName = impIntent.resolveActivity(getPackageManager());
-        String msg;
 
         if (compName != null) {
-            msg = compName.toShortString();
+            startActivity(impIntent);
         }
         else {
-            msg = "Resolution failed";
+            Toast.makeText(this, "Resolution failed", Toast.LENGTH_LONG).show();
         }
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }
