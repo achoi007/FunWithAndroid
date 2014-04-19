@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/componentTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Component Name" />
+
+    <AutoCompleteTextView
+        android:id="@+id/actionTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ACTION_" />
+
+    <EditText
+        android:id="@+id/dataTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Data" />
+
+    <AutoCompleteTextView
+        android:id="@+id/categoryTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CATEGORY_" />
+
+    <Button
+        android:id="@+id/resolveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onResolve"
+        android:text="Resolve" />
+
+
+</LinearLayout>
