@@ -3,7 +3,7 @@ package com.achoi007.listfragexp.app;
 import java.util.Date;
 
 /**
- * Created by alang_000 on 4/19/2014.
+ * Created by achoi on 4/19/2014.
  */
 public class Person {
     public long id;
