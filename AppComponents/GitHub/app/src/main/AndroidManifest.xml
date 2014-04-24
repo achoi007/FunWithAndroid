@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.achoi007.yourcontacts.app" >
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.achoi007.yourcontacts.app.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.achoi007.yourcontacts.app.UseListActivity"
+            android:label="@string/title_activity_use_list"
+            android:parentActivityName="com.achoi007.yourcontacts.app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
+        <activity
+            android:name="com.achoi007.yourcontacts.app.UseListViewActivity"
+            android:label="@string/title_activity_use_list_view"
+            android:parentActivityName="com.achoi007.yourcontacts.app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
+        <activity
+            android:name="com.achoi007.yourcontacts.app.UseListFragmentActivity"
+            android:label="@string/title_activity_use_list_fragment"
+            android:parentActivityName="com.achoi007.yourcontacts.app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

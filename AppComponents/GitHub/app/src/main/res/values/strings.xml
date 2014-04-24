@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">YourContacts</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="UseListActivity">Use ListActivity</string>
+    <string name="UseListView">Use ListView</string>
+    <string name="UseListFragment">Use ListFragment</string>
+    <string name="title_activity_use_list">UseListActivity</string>
+    <string name="title_activity_use_list_view">Using ListView</string>
+    <string name="title_activity_use_list_fragment">Using ListFragment</string>
+    <string name="NameFilter">Name Filter</string>
+
+</resources>
