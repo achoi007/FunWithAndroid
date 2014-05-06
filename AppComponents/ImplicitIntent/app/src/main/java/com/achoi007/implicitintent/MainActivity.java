@@ -164,7 +164,8 @@ public class MainActivity extends Activity {
         ComponentName compName = impIntent.resolveActivity(getPackageManager());
 
         if (compName != null) {
-            startActivity(impIntent);
+            Intent chooser = Intent.createChooser(impIntent, "Please choose");
+            startActivity(chooser);
         } else {
             Toast.makeText(this, "Resolution failed", Toast.LENGTH_LONG).show();
         }
