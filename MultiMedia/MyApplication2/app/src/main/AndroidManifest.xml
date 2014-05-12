@@ -2,7 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.achoi007.areyoupretty.app" >
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <!-- Uses camera -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <!-- For storing full picture -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +29,14 @@
         <activity
             android:name="com.achoi007.areyoupretty.app.ShowScoreActivity"
             android:label="@string/title_activity_show_score"
+            android:parentActivityName="com.achoi007.areyoupretty.app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
+        <activity
+            android:name="com.achoi007.areyoupretty.app.SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:parentActivityName="com.achoi007.areyoupretty.app.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

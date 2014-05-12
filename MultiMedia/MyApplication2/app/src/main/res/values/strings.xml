@@ -11,5 +11,8 @@
     <string name="Friendliness">Friendliness</string>
     <string name="Mystique">Mystique</string>
     <string name="Healthy">Healthy</string>
+    <string name="UseThumbnail">Use Thumbnail</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 
 </resources>
