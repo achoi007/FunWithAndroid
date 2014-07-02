@@ -31,8 +31,8 @@ public class MainActivity extends Activity implements IDownloaderCallback {
     private List<IDownloader> createLoaders() {
         List<IDownloader> loaders = new LinkedList<IDownloader>();
 
-        // Synchronous downloader for demo purpose only
-        loaders.add(new SyncDownloader());
+        // Simple thread version
+        loaders.add(new SimpleThreadDownloader());
 
         return loaders;
     }
@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
     }
 
     private void registerLoaderCallback(List<IDownloader> downloaders) {
-        for (IDownloader downloader: downloaders) {
+        for (IDownloader downloader : downloaders) {
             downloader.setCallback(this);
         }
     }
@@ -68,6 +68,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         // Set up downloaders
         mDownloaders = createLoaders();
         populateLoaderGuiList(mDownloaders);
+        registerLoaderCallback(mDownloaders);
     }
 
     @Override
@@ -115,9 +116,8 @@ public class MainActivity extends Activity implements IDownloaderCallback {
                 urlStr = "http://" + urlStr;
             }
             uri = Uri.parse(urlStr);
-        }
-        catch (Exception ex) {
-            onError(ex);
+        } catch (Exception ex) {
+            mUri.setError(ex.getMessage());
             return;
         }
 
@@ -126,7 +126,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
     }
 
     public void onResetImage(View v) {
-        // FINISH
+        mImgView.setImageResource(android.R.color.transparent);
     }
 
     @Override
@@ -153,6 +153,22 @@ public class MainActivity extends Activity implements IDownloaderCallback {
 
     @Override
     public void onProgress(int percentComplete) {
-        // FINISH
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+    }
+
+    @Override
+    public void onCancelled() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
+                enableLoading();
+            }
+        });
     }
 }

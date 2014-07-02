@@ -32,14 +32,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Load" />
+            android:text="@string/Load"
+            android:onClick="onLoadImage" />
 
         <Button
             android:id="@+id/btnReset"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Reset" />
+            android:text="@string/Reset"
+            android:onClick="onResetImage" />
     </LinearLayout>
 
     <ImageView

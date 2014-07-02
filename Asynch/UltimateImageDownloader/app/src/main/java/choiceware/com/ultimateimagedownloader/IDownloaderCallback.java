@@ -12,4 +12,6 @@ public interface IDownloaderCallback {
     void onError(Exception ex);
 
     void onProgress(int percentComplete);
+
+    void onCancelled();
 }

@@ -4,5 +4,8 @@
     <string name="app_name">UltimateImageDownloader</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="Load">Load</string>
+    <string name="Reset">Reset</string>
+    <string name="OperationCancelled">Operation cancelled</string>
 
 </resources>

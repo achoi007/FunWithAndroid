@@ -16,4 +16,6 @@ public interface IDownloader {
     void load(Uri uri, int maxWidth, int maxHeight);
 
     boolean isLoading();
+
+    void requestCancel();
 }
