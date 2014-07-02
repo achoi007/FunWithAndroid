@@ -45,7 +45,9 @@ public class DownloaderUtils {
             // Load image
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(urlStream, false);
             Bitmap image = decoder.decodeRegion(new Rect(0, 0, maxWidth, maxHeight), opts);
-            Log.d(TAG, "Loaded image with size: " + image.getWidth() + "x" + image.getHeight());
+            if (image != null) {
+                Log.d(TAG, "Loaded image with size: " + image.getWidth() + "x" + image.getHeight());
+            }
             return image;
         }
         finally {
@@ -65,7 +67,7 @@ public class DownloaderUtils {
             // FINISH - handle onProgress
 
             Bitmap image = loadImageSync(uri, maxWidth, maxHeight, cxlSig);
-            if (cxlSig.isCanceled()) {
+            if (image == null) {
                 cb.onCancelled();
             }
             else {

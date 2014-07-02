@@ -14,34 +14,42 @@
         android:layout_height="wrap_content"
         android:text="www.dre.vanderbilt.edu/~schmidt/ka.png" />
 
+    <Spinner
+        android:id="@+id/loaders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtUri"></Spinner>
+
     <LinearLayout
         android:id="@+id/cmdBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtUri"
+        android:layout_below="@id/loaders"
         android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/loaders"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"></Spinner>
 
         <Button
             android:id="@+id/btnLoad"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/Load"
-            android:onClick="onLoadImage" />
+            android:onClick="onLoadImage"
+            android:text="@string/Load" />
+
+        <Button
+            android:id="@+id/btnCxl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="onCancelLoad"
+            android:text="@string/Cancel" />
 
         <Button
             android:id="@+id/btnReset"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/Reset"
-            android:onClick="onResetImage" />
+            android:onClick="onResetImage"
+            android:text="@string/Reset" />
     </LinearLayout>
 
     <ImageView

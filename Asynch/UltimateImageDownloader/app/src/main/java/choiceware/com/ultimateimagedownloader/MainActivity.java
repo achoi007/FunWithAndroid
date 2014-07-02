@@ -27,6 +27,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
     private Button mLoadBtn;
     private EditText mUri;
     private Spinner mLoaderSpinner;
+    private IDownloader mCurrLoader;
 
     private List<IDownloader> createLoaders() {
         List<IDownloader> loaders = new LinkedList<IDownloader>();
@@ -51,6 +52,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
 
     private void enableLoading() {
         mLoadBtn.setEnabled(true);
+        mCurrLoader = null;
         // FINISH - dismiss progress dialog
     }
 
@@ -90,6 +92,12 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onCancelLoad(View v) {
+        if (mCurrLoader != null) {
+            mCurrLoader.requestCancel();
+        }
+    }
+
     public void onLoadImage(View v) {
 
         // Disable load button
@@ -101,9 +109,12 @@ public class MainActivity extends Activity implements IDownloaderCallback {
 
         // Ignore if loader is currently busy
         if (loader.isLoading()) {
-            Toast.makeText(this, "Loader is currently busy", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.LoaderIsBusy), Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Set current loader
+        mCurrLoader = loader;
 
         // Bring up progress dialog
         // FINISH
@@ -166,7 +177,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MainActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, getString(R.string.Cancelled), Toast.LENGTH_LONG).show();
                 enableLoading();
             }
         });
