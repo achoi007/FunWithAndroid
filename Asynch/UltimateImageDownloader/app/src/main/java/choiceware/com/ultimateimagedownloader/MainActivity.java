@@ -1,0 +1,158 @@
+package choiceware.com.ultimateimagedownloader;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.LinkedList;
+import java.util.List;
+
+
+public class MainActivity extends Activity implements IDownloaderCallback {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private ImageView mImgView;
+    private List<IDownloader> mDownloaders;
+    private Button mLoadBtn;
+    private EditText mUri;
+    private Spinner mLoaderSpinner;
+
+    private List<IDownloader> createLoaders() {
+        List<IDownloader> loaders = new LinkedList<IDownloader>();
+
+        // Synchronous downloader for demo purpose only
+        loaders.add(new SyncDownloader());
+
+        return loaders;
+    }
+
+    private void populateLoaderGuiList(List<IDownloader> loaders) {
+        ArrayAdapter<IDownloader> adapter = new ArrayAdapter<IDownloader>(this,
+                android.R.layout.simple_list_item_1, loaders);
+        mLoaderSpinner.setAdapter(adapter);
+    }
+
+    private void registerLoaderCallback(List<IDownloader> downloaders) {
+        for (IDownloader downloader: downloaders) {
+            downloader.setCallback(this);
+        }
+    }
+
+    private void enableLoading() {
+        mLoadBtn.setEnabled(true);
+        // FINISH - dismiss progress dialog
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Remember some controls
+        mImgView = (ImageView) findViewById(R.id.imgView);
+        mLoadBtn = (Button) findViewById(R.id.btnLoad);
+        mUri = (EditText) findViewById(R.id.txtUri);
+        mLoaderSpinner = (Spinner) findViewById(R.id.loaders);
+
+        // Set up downloaders
+        mDownloaders = createLoaders();
+        populateLoaderGuiList(mDownloaders);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onLoadImage(View v) {
+
+        // Disable load button
+        mLoadBtn.setEnabled(false);
+
+        // Get loader to use
+        IDownloader loader = (IDownloader) mLoaderSpinner.getSelectedItem();
+        Log.d(TAG, "selected loader: " + loader);
+
+        // Ignore if loader is currently busy
+        if (loader.isLoading()) {
+            Toast.makeText(this, "Loader is currently busy", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Bring up progress dialog
+        // FINISH
+
+        // Get Uri
+        Uri uri = null;
+        try {
+            String urlStr = mUri.getText().toString();
+            if (!urlStr.startsWith("http:")) {
+                urlStr = "http://" + urlStr;
+            }
+            uri = Uri.parse(urlStr);
+        }
+        catch (Exception ex) {
+            onError(ex);
+            return;
+        }
+
+        // Load image
+        loader.load(uri, mImgView.getWidth(), mImgView.getHeight());
+    }
+
+    public void onResetImage(View v) {
+        // FINISH
+    }
+
+    @Override
+    public void onImage(final Bitmap image) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mImgView.setImageBitmap(image);
+                enableLoading();
+            }
+        });
+    }
+
+    @Override
+    public void onError(final Exception ex) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                enableLoading();
+            }
+        });
+    }
+
+    @Override
+    public void onProgress(int percentComplete) {
+        // FINISH
+    }
+}
