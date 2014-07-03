@@ -35,6 +35,9 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         // Simple thread version
         loaders.add(new SimpleThreadDownloader());
 
+        // Async Task
+        loaders.add(new AsyncTaskDownloader());
+
         return loaders;
     }
 

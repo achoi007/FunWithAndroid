@@ -10,5 +10,7 @@
     <string name="LoaderIsBusy">Loader is busy</string>
     <string name="Cancelled">Cancelled</string>
     <string name="Cancel">Cxl</string>
+    <string name="SimpleThread">Simple Thread</string>
+    <string name="AsyncTask">Async Task</string>
 
 </resources>

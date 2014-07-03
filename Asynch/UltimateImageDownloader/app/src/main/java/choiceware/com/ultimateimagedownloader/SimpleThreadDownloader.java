@@ -9,7 +9,7 @@ import android.net.Uri;
 public class SimpleThreadDownloader extends AbstractDownloader {
 
     public SimpleThreadDownloader() {
-        super("Simple Thread");
+        super(MyApplication.getStrFromContext(R.string.SimpleThread));
     }
 
     @Override
@@ -20,9 +20,8 @@ public class SimpleThreadDownloader extends AbstractDownloader {
                 try {
                     DownloaderUtils.loadImageWithCallbackSync(mCallback, loadOpt.getUri(),
                             loadOpt.getMaxWidth(), loadOpt.getMaxHeight(), loadOpt.getCxlSig());
-                }
-                finally {
-                    mIsLoading = false;
+                } finally {
+                    notifyIsDoneLoading();
                 }
             }
         });

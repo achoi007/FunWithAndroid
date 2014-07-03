@@ -18,8 +18,10 @@ public class DownloaderUtils {
 
     private static final String TAG = DownloaderUtils.class.getSimpleName();
 
-    /***
+    /**
      * Load image synchronously.  Will block current thread.
+     * Return bitmap if bitmap is loaded or null if cancelled.
+     *
      * @param uri
      * @return
      */
@@ -49,15 +51,15 @@ public class DownloaderUtils {
                 Log.d(TAG, "Loaded image with size: " + image.getWidth() + "x" + image.getHeight());
             }
             return image;
-        }
-        finally {
+        } finally {
             urlStream.close();
         }
     }
 
-    /***
+    /**
      * Helper function to load image synchronously and either call onImage of callback if success or
      * onError of callback if error
+     *
      * @param cb
      * @param uri
      */
@@ -69,12 +71,10 @@ public class DownloaderUtils {
             Bitmap image = loadImageSync(uri, maxWidth, maxHeight, cxlSig);
             if (image == null) {
                 cb.onCancelled();
-            }
-            else {
+            } else {
                 cb.onImage(image);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.e(TAG, ex.getMessage(), ex);
             cb.onError(ex);
         }

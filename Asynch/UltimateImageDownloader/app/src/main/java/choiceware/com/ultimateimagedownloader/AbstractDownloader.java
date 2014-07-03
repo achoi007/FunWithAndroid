@@ -51,13 +51,18 @@ public abstract class AbstractDownloader implements IDownloader {
         onRequestCancel();
     }
 
-    /***
+    protected void notifyIsDoneLoading() {
+        mIsLoading = false;
+    }
+
+    /**
      * Hook function to handle when onLoad is called.  mLoading is set to true.
+     *
      * @param loadOpt
      */
     protected abstract void onLoad(LoadOptions loadOpt);
 
-    /***
+    /**
      * Hook function to handle when requestCancel is called.  mCxlSig.isCancelled() should be
      * true already.
      */
