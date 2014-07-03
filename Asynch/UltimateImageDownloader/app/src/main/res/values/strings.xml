@@ -12,5 +12,6 @@
     <string name="Cancel">Cxl</string>
     <string name="SimpleThread">Simple Thread</string>
     <string name="AsyncTask">Async Task</string>
+    <string name="MessengerLooper">Messenger Loop</string>
 
 </resources>

@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Created by alang_000 on 7/1/2014.
+ * Created by andyc on 7/1/2014.
  */
 public class DownloaderUtils {
 

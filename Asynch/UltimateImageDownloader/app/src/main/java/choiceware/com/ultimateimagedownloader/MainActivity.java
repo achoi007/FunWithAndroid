@@ -38,6 +38,9 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         // Async Task
         loaders.add(new AsyncTaskDownloader());
 
+        // Handler Thread with Messenger
+        loaders.add(new MsgHdlrThrdDownloader());
+
         return loaders;
     }
 

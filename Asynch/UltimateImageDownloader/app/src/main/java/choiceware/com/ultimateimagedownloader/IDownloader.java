@@ -3,7 +3,7 @@ package choiceware.com.ultimateimagedownloader;
 import android.net.Uri;
 
 /**
- * Created by alang_000 on 7/1/2014.
+ * Created by andyc on 7/1/2014.
  */
 public interface IDownloader {
 

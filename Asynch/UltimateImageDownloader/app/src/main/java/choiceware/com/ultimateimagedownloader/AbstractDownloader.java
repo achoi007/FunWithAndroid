@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.os.CancellationSignal;
 
 /**
- * Created by alang_000 on 7/2/2014.
+ * Created by andyc on 7/2/2014.
  */
 public abstract class AbstractDownloader implements IDownloader {
 

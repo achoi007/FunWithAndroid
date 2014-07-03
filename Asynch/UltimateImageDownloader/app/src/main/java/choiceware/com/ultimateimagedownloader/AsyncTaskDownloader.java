@@ -5,7 +5,8 @@ import android.os.AsyncTask;
 import android.os.CancellationSignal;
 
 /**
- * Created by alang_000 on 7/2/2014.
+ * An IDownloader that uses AsyncTask
+ * Created by andyc on 7/2/2014.
  */
 public class AsyncTaskDownloader extends AbstractDownloader {
 
