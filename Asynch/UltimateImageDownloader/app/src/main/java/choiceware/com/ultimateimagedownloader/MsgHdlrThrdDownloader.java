@@ -26,8 +26,12 @@ public class MsgHdlrThrdDownloader extends AbstractDownloader {
             public void handleMessage(Message msg) {
                 if (msg.what == REQ_LOAD) {
                     LoadOptions opt = (LoadOptions) msg.obj;
-                    DownloaderUtils.loadImageWithCallbackSync(mCallback, opt);
-                    notifyIsDoneLoading();
+                    try {
+                        DownloaderUtils.loadImageWithCallbackSync(mCallback, opt);
+                    }
+                    finally {
+                        notifyIsDoneLoading();
+                    }
                 }
             }
         };

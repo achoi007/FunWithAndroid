@@ -20,8 +20,12 @@ public class ExecutorServicesDownloader extends AbstractDownloader {
         mPool.execute(new Runnable() {
             @Override
             public void run() {
-                DownloaderUtils.loadImageWithCallbackSync(mCallback, loadOpt);
-                notifyIsDoneLoading();
+                try {
+                    DownloaderUtils.loadImageWithCallbackSync(mCallback, loadOpt);
+                }
+                finally {
+                    notifyIsDoneLoading();
+                }
             }
         });
     }
