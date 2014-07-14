@@ -5,7 +5,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 
 /**
- * Created by andyc_000 on 7/3/2014.
+ * Created by andyc on 7/3/2014.
  */
 public class MsgHdlrThrdDownloader extends AbstractDownloader {
 
@@ -26,8 +26,7 @@ public class MsgHdlrThrdDownloader extends AbstractDownloader {
             public void handleMessage(Message msg) {
                 if (msg.what == REQ_LOAD) {
                     LoadOptions opt = (LoadOptions) msg.obj;
-                    DownloaderUtils.loadImageWithCallbackSync(mCallback, opt.getUri(),
-                            opt.getMaxWidth(), opt.getMaxHeight(), opt.getCxlSig());
+                    DownloaderUtils.loadImageWithCallbackSync(mCallback, opt);
                     notifyIsDoneLoading();
                 }
             }

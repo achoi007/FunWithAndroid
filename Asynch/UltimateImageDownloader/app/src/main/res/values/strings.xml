@@ -13,5 +13,6 @@
     <string name="SimpleThread">Simple Thread</string>
     <string name="AsyncTask">Async Task</string>
     <string name="MessengerLooper">Messenger Loop</string>
+    <string name="ExecutorServicesThread">Executor Services Thread</string>
 
 </resources>

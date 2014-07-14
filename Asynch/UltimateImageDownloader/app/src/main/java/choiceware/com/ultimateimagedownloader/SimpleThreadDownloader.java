@@ -4,7 +4,7 @@ import android.net.Uri;
 
 /**
  * Using a simple thread to download image
- * Created by andyc_000 on 7/2/2014.
+ * Created by andyc on 7/2/2014.
  */
 public class SimpleThreadDownloader extends AbstractDownloader {
 
@@ -18,8 +18,7 @@ public class SimpleThreadDownloader extends AbstractDownloader {
             @Override
             public void run() {
                 try {
-                    DownloaderUtils.loadImageWithCallbackSync(mCallback, loadOpt.getUri(),
-                            loadOpt.getMaxWidth(), loadOpt.getMaxHeight(), loadOpt.getCxlSig());
+                    DownloaderUtils.loadImageWithCallbackSync(mCallback, loadOpt);
                 } finally {
                     notifyIsDoneLoading();
                 }

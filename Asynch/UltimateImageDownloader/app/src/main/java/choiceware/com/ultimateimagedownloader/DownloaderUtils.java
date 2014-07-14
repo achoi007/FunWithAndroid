@@ -79,4 +79,15 @@ public class DownloaderUtils {
             cb.onError(ex);
         }
     }
+
+    /**
+     * Convenience function to call loadImageWithCallbackSync with LoadOptions
+     * @param cb
+     * @param loadOpt
+     */
+    public static void loadImageWithCallbackSync(IDownloaderCallback cb, LoadOptions loadOpt)
+    {
+        loadImageWithCallbackSync(cb, loadOpt.getUri(), loadOpt.getMaxWidth(),
+                loadOpt.getMaxHeight(), loadOpt.getCxlSig());
+    }
 }

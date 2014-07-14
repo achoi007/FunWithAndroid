@@ -24,7 +24,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
     private static final String TAG = MainActivity.class.getSimpleName();
     private ImageView mImgView;
     private List<IDownloader> mDownloaders;
-    private Button mLoadBtn;
+    private Button mLoadBtn, mCxlBtn;
     private EditText mUri;
     private Spinner mLoaderSpinner;
     private IDownloader mCurrLoader;
@@ -41,6 +41,9 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         // Handler Thread with Messenger
         loaders.add(new MsgHdlrThrdDownloader());
 
+        // Using ExecutorService
+        loaders.add(new ExecutorServicesDownloader());
+
         return loaders;
     }
 
@@ -56,9 +59,12 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         }
     }
 
-    private void enableLoading() {
-        mLoadBtn.setEnabled(true);
-        mCurrLoader = null;
+    private void enableLoading(boolean v) {
+        mLoadBtn.setEnabled(v);
+        mCxlBtn.setEnabled(!v);
+        if (v) {
+            mCurrLoader = null;
+        }
         // FINISH - dismiss progress dialog
     }
 
@@ -70,6 +76,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         // Remember some controls
         mImgView = (ImageView) findViewById(R.id.imgView);
         mLoadBtn = (Button) findViewById(R.id.btnLoad);
+        mCxlBtn = (Button) findViewById(R.id.btnCxl);
         mUri = (EditText) findViewById(R.id.txtUri);
         mLoaderSpinner = (Spinner) findViewById(R.id.loaders);
 
@@ -106,8 +113,8 @@ public class MainActivity extends Activity implements IDownloaderCallback {
 
     public void onLoadImage(View v) {
 
-        // Disable load button
-        mLoadBtn.setEnabled(false);
+        // Disallow loading while current loading is active
+        enableLoading(false);
 
         // Get loader to use
         IDownloader loader = (IDownloader) mLoaderSpinner.getSelectedItem();
@@ -152,7 +159,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
             @Override
             public void run() {
                 mImgView.setImageBitmap(image);
-                enableLoading();
+                enableLoading(true);
             }
         });
     }
@@ -163,7 +170,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
             @Override
             public void run() {
                 Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
-                enableLoading();
+                enableLoading(true);
             }
         });
     }
@@ -184,7 +191,7 @@ public class MainActivity extends Activity implements IDownloaderCallback {
             @Override
             public void run() {
                 Toast.makeText(MainActivity.this, getString(R.string.Cancelled), Toast.LENGTH_LONG).show();
-                enableLoading();
+                enableLoading(true);
             }
         });
     }
