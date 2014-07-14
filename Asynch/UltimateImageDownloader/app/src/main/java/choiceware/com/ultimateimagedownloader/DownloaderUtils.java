@@ -5,11 +5,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.os.Message;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
+import java.util.IllegalFormatException;
+import java.util.UnknownFormatConversionException;
 
 /**
  * Created by andyc on 7/1/2014.
@@ -89,5 +96,82 @@ public class DownloaderUtils {
     {
         loadImageWithCallbackSync(cb, loadOpt.getUri(), loadOpt.getMaxWidth(),
                 loadOpt.getMaxHeight(), loadOpt.getCxlSig());
+    }
+
+    /**
+     * Function takes a bitmap and saves it into a temporary file, and then sets
+     * fieldName of Message to temporary file name.  See also getBitmapFromMessage.
+     * @param msg
+     * @param fieldName - field name to use in msg, or null to use IntentExtraData.IMAGE
+     * @param image
+     * @throws Exception
+     */
+    public static void setBitmapIntoMessage(Message msg, String fieldName, Bitmap image)
+        throws Exception {
+
+        // Use IMAGE if no field name specified
+        if (fieldName == null) {
+            fieldName = IntentExtraData.IMAGE;
+        }
+
+        // Create temporary file name
+        File file = File.createTempFile("image", "png");
+        Log.d(TAG, "Creating temp file " + file.getPath());
+
+        // Write bitmap into temporary file
+        Log.d(TAG, "Writing bitmap to temp file");
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(file);
+            boolean isDecodable = image.compress(Bitmap.CompressFormat.PNG, 100, os);
+            if (!isDecodable) {
+                Exception ex = new UnknownFormatConversionException("format is not decodable");
+                Log.e(TAG, ex.getMessage(), ex);
+                throw ex;
+            }
+        }
+        finally {
+            os.close();
+        }
+
+        // Set field name to temporary file name
+        Bundle bundle = new Bundle();
+        bundle.putString(fieldName, file.getPath());
+        msg.setData(bundle);
+        Log.d(TAG, "Setting temp file into bundle");
+    }
+
+    /**
+     * Convenience function to get image pathname from message field and return bitmap.
+     * Optionally delete the image file if no error occurs.  See also setBitmapToMessage.
+     * @param msg
+     * @param fieldName - field in msg containing image path, or use IntentExtraData.IMAGE if null.
+     * @param deleteFile - if true, delete image file if no error
+     * @return
+     * @throws Exception
+     */
+    public static Bitmap getBitmapFromMessage(Message msg, String fieldName, boolean deleteFile)
+        throws Exception {
+
+        // Use IMAGE if no field name specified
+        if (fieldName == null) {
+            fieldName = IntentExtraData.IMAGE;
+        }
+
+        // Get file name
+        String path = msg.getData().getString(fieldName);
+        Log.d(TAG, "Got bitmap path " + path);
+
+        // Create bitmap from file
+        Bitmap image = BitmapFactory.decodeFile(path);
+
+        // Check if delete file
+        if (deleteFile) {
+            Log.d(TAG, "Deleting bitmap file");
+            File file = new File(path);
+            file.delete();
+        }
+
+        return image;
     }
 }

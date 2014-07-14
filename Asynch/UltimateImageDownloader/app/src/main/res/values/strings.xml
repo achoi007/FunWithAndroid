@@ -14,5 +14,6 @@
     <string name="AsyncTask">Async Task</string>
     <string name="MessengerLooper">Messenger Loop</string>
     <string name="ExecutorServicesThread">Executor Services Thread</string>
+    <string name="IntentServiceWithMessenger">Intent Service with Messenger</string>
 
 </resources>

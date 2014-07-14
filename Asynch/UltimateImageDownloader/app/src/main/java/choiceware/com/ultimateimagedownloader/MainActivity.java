@@ -44,6 +44,10 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         // Using ExecutorService
         loaders.add(new ExecutorServicesDownloader());
 
+        // Using Intent Service with Messenger
+        loaders.add(new StartedServiceWithMessengerDownloader(R.string.IntentServiceWithMessenger,
+                IntentServiceMsgDownloaderService.class));
+
         return loaders;
     }
 
