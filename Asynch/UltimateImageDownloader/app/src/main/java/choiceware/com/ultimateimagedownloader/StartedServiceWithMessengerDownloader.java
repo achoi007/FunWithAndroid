@@ -2,6 +2,7 @@ package choiceware.com.ultimateimagedownloader;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -24,6 +25,15 @@ public class StartedServiceWithMessengerDownloader extends AbstractDownloader {
 
     @Override
     protected void onLoad(LoadOptions loadOpt) {
+
+        loadOpt.getCxlSig().setOnCancelListener(new CancellationSignal.OnCancelListener() {
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "Stopping service");
+                Intent intent = new Intent(MyApplication.getContext(), mServiceClass);
+                MyApplication.getContext().stopService(intent);
+            }
+        });
 
         // Create service intent
         Intent intent = new Intent(MyApplication.getContext(), mServiceClass);

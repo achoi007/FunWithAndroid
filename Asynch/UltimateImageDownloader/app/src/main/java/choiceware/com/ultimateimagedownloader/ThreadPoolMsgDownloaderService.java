@@ -13,6 +13,7 @@ import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A service which uses thread pool to download image and communicates result back
@@ -30,7 +31,7 @@ public class ThreadPoolMsgDownloaderService extends Service {
     }
 
     @Override
-    public int onStartCommand(final Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, final int startId) {
         mPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -53,6 +54,9 @@ public class ThreadPoolMsgDownloaderService extends Service {
                 catch (RemoteException ex) {
                     Log.e(TAG, ex.getMessage(), ex);
                 }
+
+                // Stops service if no more requests
+                ThreadPoolMsgDownloaderService.this.stopSelf(startId);
             }
         });
         return Service.START_NOT_STICKY;
@@ -61,5 +65,31 @@ public class ThreadPoolMsgDownloaderService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        // Disables new task from starting
+        mPool.shutdown();
+
+        try {
+
+            // Waits for a while for current tasks to finish
+            if (!mPool.awaitTermination(60, TimeUnit.SECONDS)) {
+
+                // Cancels executing tasks
+                mPool.shutdownNow();
+
+                // Waits for a while for tasks to be cancelled.
+                if (!mPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    Log.e(TAG, "Pool did not terminate");
+                }
+            }
+        }
+        catch (InterruptedException ex) {
+            mPool.shutdownNow();
+            // Preserves interrupt status
+            Thread.currentThread().interrupt();
+        }
     }
 }
