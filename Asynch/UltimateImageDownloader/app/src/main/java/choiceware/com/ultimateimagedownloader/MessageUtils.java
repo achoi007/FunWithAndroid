@@ -68,29 +68,12 @@ public class MessageUtils {
     }
 
     /**
-     *
+     * Saves image into given filename.  See also saveBitmap(Bitmap image)
+     * @param file
      * @param image
-     * @param msg
-     * @param fieldName
      * @throws Exception
      */
-    public static void setBitmap(Bitmap image, Message msg, String fieldName) throws Exception {
-
-        // Uses default field name if none is provided
-        if (fieldName == null) {
-            fieldName = IntentExtraData.IMAGE;
-        }
-
-        // Creates temporary filename
-        File file;
-        if (mFolder == null) {
-            file = File.createTempFile("image", "png");
-        }
-        else {
-            file = File.createTempFile("image", "png", new File(mFolder));
-        }
-        Log.d(TAG, "Using temporary file: " + file);
-
+    public static void saveBitmapAsFile(File file, Bitmap image) throws Exception {
         // Writes bitmap into temporary file and makes sure it is decodable
         Log.d(TAG, "Writing to temp file");
         FileOutputStream os = null;
@@ -108,6 +91,50 @@ public class MessageUtils {
                 os.close();
             }
         }
+    }
+
+    /**
+     * Saves image into a decodable file (BitmapFactory.decodeFile) and returns filename.
+     * @param image
+     * @return
+     * @throws Exception
+     */
+    public static File saveBitmapAsFile(Bitmap image) throws Exception {
+
+        // Generates filename
+        File file;
+        if (mFolder == null) {
+            file = File.createTempFile("image", "png");
+        }
+        else {
+            file = File.createTempFile("image", "png", new File(mFolder));
+        }
+        Log.d(TAG, "Using temporary file: " + file);
+
+        // Saves image into file
+        saveBitmapAsFile(file, image);
+
+        // Returns file
+        return file;
+    }
+
+    /**
+     * Saves image into a file and then sets field name of msg to pathname of file.  See also
+     * getBitmap.
+     * @param image
+     * @param msg
+     * @param fieldName
+     * @throws Exception
+     */
+    public static void setBitmap(Bitmap image, Message msg, String fieldName) throws Exception {
+
+        // Uses default field name if none is provided
+        if (fieldName == null) {
+            fieldName = IntentExtraData.IMAGE;
+        }
+
+        // Creates temporary filename
+        File file = saveBitmapAsFile(image);
 
         // Sets field name within message to temporary file name
         msg.getData().putString(fieldName, file.getPath());
@@ -115,7 +142,7 @@ public class MessageUtils {
     }
 
     /**
-     *
+     * Gets pathname from field name of msg and converts into bitmap.  See setBitmap.
      * @param msg
      * @param fieldName
      * @param deleteFile

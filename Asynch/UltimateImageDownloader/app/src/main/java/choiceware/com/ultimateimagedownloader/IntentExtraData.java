@@ -14,6 +14,8 @@ public class IntentExtraData {
     public static final String MAX_HEIGHT = "MAX_HEIGHT";
     public static final String MESSENGER = "MESSENGER";
     public static final String IMAGE = "IMAGE";
+    public static final String PENDING_INTENT = "PENDING_INTENT";
+    public static final String EXCEPTION = "EXCEPTION";
 
     public static int getMaxWidth(Intent i) {
         return i.getIntExtra(MAX_WIDTH, 100);
