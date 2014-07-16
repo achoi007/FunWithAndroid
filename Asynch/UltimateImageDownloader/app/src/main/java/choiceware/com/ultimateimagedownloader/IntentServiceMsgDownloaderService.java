@@ -26,23 +26,13 @@ public class IntentServiceMsgDownloaderService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
-        // Gets parameters
-        Uri uri = intent.getData();
-        int maxWidth = IntentExtraData.getMaxWidth(intent);
-        int maxHeight = IntentExtraData.getMaxHeight(intent);
-        Log.d(TAG, "onHandleIntent: " + uri + " " + maxWidth + "x" + maxHeight);
-
-
         try {
 
             Messenger messenger = IntentExtraData.getMessenger(intent);
             Message msg = Message.obtain();
 
             try {
-                // Downloads bitmap
-                Bitmap image = DownloaderUtils.loadImageSync(uri, maxWidth, maxHeight,
-                        new CancellationSignal());
+                Bitmap image = DownloaderUtils.loadImageSync(intent, new CancellationSignal());
                 MessageUtils.setBitmap(image, msg, null);
             }
             catch (Exception ex) {

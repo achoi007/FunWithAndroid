@@ -8,6 +8,8 @@ import android.os.Messenger;
 import android.util.Log;
 
 /**
+ * Class to use a "started service" as image downloader.
+ *
  * Created by andyc on 7/14/2014.
  */
 public class StartedServiceWithMessengerDownloader extends AbstractDownloader {
@@ -15,8 +17,8 @@ public class StartedServiceWithMessengerDownloader extends AbstractDownloader {
     private static final String TAG = StartedServiceWithMessengerDownloader.class.getSimpleName();
     private Class mServiceClass;
 
-    public StartedServiceWithMessengerDownloader(int resId, Class serviceClass) {
-        super(MyApplication.getStrFromContext(resId));
+    public StartedServiceWithMessengerDownloader(int strResId, Class serviceClass) {
+        super(MyApplication.getStrFromContext(strResId));
         mServiceClass = serviceClass;
     }
 

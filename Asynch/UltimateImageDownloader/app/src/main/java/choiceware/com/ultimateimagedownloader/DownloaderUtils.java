@@ -1,5 +1,6 @@
 package choiceware.com.ultimateimagedownloader;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
@@ -61,6 +62,19 @@ public class DownloaderUtils {
         } finally {
             urlStream.close();
         }
+    }
+
+    /**
+     * Convenience function to load bitmap from using information in intent
+     * @param intent
+     * @param cxlSig
+     */
+    public static Bitmap loadImageSync(Intent intent, CancellationSignal cxlSig) throws Exception {
+        Uri uri = intent.getData();
+        int maxWidth = IntentExtraData.getMaxWidth(intent);
+        int maxHeight = IntentExtraData.getMaxHeight(intent);
+        Log.d(TAG, "load img from intent " + uri + ":" + maxWidth + "x" + maxHeight);
+        return loadImageSync(uri, maxWidth, maxHeight, cxlSig);
     }
 
     /**

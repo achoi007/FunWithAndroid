@@ -15,5 +15,6 @@
     <string name="MessengerLooper">Messenger Loop</string>
     <string name="ExecutorServicesThread">Executor Services Thread</string>
     <string name="IntentServiceWithMessenger">Intent Service with Messenger</string>
+    <string name="ThreadPoolMessenger">Thread Pool with Messenger</string>
 
 </resources>
