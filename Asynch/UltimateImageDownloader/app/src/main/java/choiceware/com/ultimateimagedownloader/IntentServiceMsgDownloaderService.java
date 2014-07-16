@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.CancellationSignal;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 
 /**
@@ -26,26 +27,32 @@ public class IntentServiceMsgDownloaderService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        // Get parameters
+        // Gets parameters
         Uri uri = intent.getData();
         int maxWidth = IntentExtraData.getMaxWidth(intent);
         int maxHeight = IntentExtraData.getMaxHeight(intent);
         Log.d(TAG, "onHandleIntent: " + uri + " " + maxWidth + "x" + maxHeight);
 
+
         try {
-            // Download bitmap
-            Bitmap image = DownloaderUtils.loadImageSync(uri, maxWidth, maxHeight,
-                    new CancellationSignal());
 
-            // Generate message to send
-            Message msg = Message.obtain();
-            DownloaderUtils.setBitmapIntoMessage(msg, null, image);
-
-            // Send message
             Messenger messenger = IntentExtraData.getMessenger(intent);
+            Message msg = Message.obtain();
+
+            try {
+                // Downloads bitmap
+                Bitmap image = DownloaderUtils.loadImageSync(uri, maxWidth, maxHeight,
+                        new CancellationSignal());
+                MessageUtils.setBitmap(image, msg, null);
+            }
+            catch (Exception ex) {
+                MessageUtils.setError(msg, ex);
+            }
+            
+            // Sends message
             messenger.send(msg);
         }
-        catch (Exception ex) {
+        catch (RemoteException ex) {
             Log.e(TAG, ex.getMessage(), ex);
         }
     }

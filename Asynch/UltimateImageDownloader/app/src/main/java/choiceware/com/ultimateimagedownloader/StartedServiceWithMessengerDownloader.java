@@ -45,10 +45,20 @@ public class StartedServiceWithMessengerDownloader extends AbstractDownloader {
     }
 
     private void processMessage(Message message) {
-        Log.d(TAG, "Processing message");
         try {
-            Bitmap image = DownloaderUtils.getBitmapFromMessage(message, null, true);
-            getCallback().onImage(image);
+            if (MessageUtils.getError(message) != null) {
+                Log.d(TAG, "procMsg: error");
+                getCallback().onError(MessageUtils.getError(message));
+            }
+            else if (MessageUtils.isCancelled(message)) {
+                Log.d(TAG, "procMsg: cancelled");
+                getCallback().onCancelled();
+            }
+            else {
+                Log.d(TAG, "procMsg: image");
+                Bitmap image = MessageUtils.getBitmap(message, null, true);
+                getCallback().onImage(image);
+            }
         }
         catch (Exception ex) {
             Log.e(TAG, ex.getMessage(), ex);
