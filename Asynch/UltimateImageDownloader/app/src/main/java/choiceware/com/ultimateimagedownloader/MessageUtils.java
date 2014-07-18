@@ -68,57 +68,6 @@ public class MessageUtils {
     }
 
     /**
-     * Saves image into given filename.  See also saveBitmap(Bitmap image)
-     * @param file
-     * @param image
-     * @throws Exception
-     */
-    public static void saveBitmapAsFile(File file, Bitmap image) throws Exception {
-        // Writes bitmap into temporary file and makes sure it is decodable
-        Log.d(TAG, "Writing to temp file");
-        FileOutputStream os = null;
-        try {
-            os = new FileOutputStream(file);
-            boolean decodable = image.compress(Bitmap.CompressFormat.PNG, 0, os);
-            if (!decodable) {
-                Exception ex = new UnknownFormatConversionException("format not decodable");
-                Log.e(TAG, ex.getMessage(), ex);
-                throw ex;
-            }
-        }
-        finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
-
-    /**
-     * Saves image into a decodable file (BitmapFactory.decodeFile) and returns filename.
-     * @param image
-     * @return
-     * @throws Exception
-     */
-    public static File saveBitmapAsFile(Bitmap image) throws Exception {
-
-        // Generates filename
-        File file;
-        if (mFolder == null) {
-            file = File.createTempFile("image", "png");
-        }
-        else {
-            file = File.createTempFile("image", "png", new File(mFolder));
-        }
-        Log.d(TAG, "Using temporary file: " + file);
-
-        // Saves image into file
-        saveBitmapAsFile(file, image);
-
-        // Returns file
-        return file;
-    }
-
-    /**
      * Saves image into a file and then sets field name of msg to pathname of file.  See also
      * getBitmap.
      * @param image
@@ -134,7 +83,16 @@ public class MessageUtils {
         }
 
         // Creates temporary filename
-        File file = saveBitmapAsFile(image);
+        File file;
+        if (mFolder == null) {
+            file = File.createTempFile("image", "png");
+        }
+        else {
+            file = File.createTempFile("image", "png", new File(mFolder));
+        }
+
+        // Save image into file
+        DownloaderUtils.saveImage(image, file);
 
         // Sets field name within message to temporary file name
         msg.getData().putString(fieldName, file.getPath());
@@ -161,14 +119,6 @@ public class MessageUtils {
         Log.d(TAG, "Got image path " + file);
 
         // Decodes bitmap
-        Bitmap image = BitmapFactory.decodeFile(file);
-
-        // Deletes if success
-        if (deleteFile) {
-            File f = new File(file);
-            f.delete();
-        }
-
-        return image;
+        return DownloaderUtils.loadImage(new File(file), deleteFile);
     }
 }

@@ -1,6 +1,7 @@
 package choiceware.com.ultimateimagedownloader;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,6 +53,10 @@ public class MainActivity extends Activity implements IDownloaderCallback {
         // Using thread pool service with messenger
         loaders.add(new StartedServiceWithMessengerDownloader(R.string.ThreadPoolMessenger,
                 ThreadPoolMsgDownloaderService.class));
+
+        // Using thread and onActivityResult pending intent
+        loaders.add(new ActivityResultPendingIntentDownloader(R.string.ActivityResultPendingIntent,
+                ThreadPendingIntentDownloaderService.class, this));
 
         return loaders;
     }
@@ -202,5 +208,24 @@ public class MainActivity extends Activity implements IDownloaderCallback {
                 enableLoading(true);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "onActivityResult: " + resultCode);
+        try {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Exception ex = (Exception) data.getParcelableExtra(IntentExtraData.EXCEPTION);
+                throw ex;
+            } else {
+                String path = data.getStringExtra(IntentExtraData.IMAGE);
+                Bitmap image = DownloaderUtils.loadImage(new File(path), true);
+                mImgView.setImageBitmap(image);
+            }
+        } catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            enableLoading(true);
+        }
     }
 }

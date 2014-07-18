@@ -23,8 +23,9 @@
         </activity>
 
         <service android:name=".IntentServiceMsgDownloaderService" android:exported="false" />
-
         <service android:name=".ThreadPoolMsgDownloaderService" android:exported="false" />
+        <service android:name=".ThreadPendingIntentDownloaderService" android:exported="false" />
+
     </application>
 
 </manifest>

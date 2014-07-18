@@ -6,17 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.CancellationSignal;
-import android.os.Message;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
-import java.util.IllegalFormatException;
 import java.util.UnknownFormatConversionException;
 
 /**
@@ -25,6 +21,76 @@ import java.util.UnknownFormatConversionException;
 public class DownloaderUtils {
 
     private static final String TAG = DownloaderUtils.class.getSimpleName();
+
+    /**
+     * Save image into given filename.  See also loadImage
+     * @param image
+     * @param file
+     * @throws Exception
+     */
+    public static void saveImage(Bitmap image, File file) throws Exception {
+        // Save bitmap into file
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream(file);
+            boolean decodable = image.compress(Bitmap.CompressFormat.PNG, 0, os);
+            if (!decodable) {
+                Exception ex = new UnknownFormatConversionException("format not decodable");
+                Log.e(TAG, ex.getMessage(), ex);
+                throw ex;
+            }
+        }
+        finally {
+            if (os != null) {
+                os.close();
+            }
+        }
+    }
+
+    /**
+     * Load bitmap from given file.  See also saveImage
+     * @param file
+     * @param deleteFile
+     * @return
+     * @throws Exception
+     */
+    public static Bitmap loadImage(File file, boolean deleteFile) throws Exception {
+        Bitmap image = BitmapFactory.decodeFile(file.getPath());
+        if (deleteFile) {
+            file.delete();
+        }
+        return image;
+    }
+
+    /**
+     * Same as call loadImageSync followed by saveImageAsFile
+     * @param folder
+     * @param uri
+     * @param maxWidth
+     * @param maxHeight
+     * @param cxlSig
+     * @return
+     * @throws Exception
+     */
+    public static File loadImageAsFileSync(File folder, Uri uri, int maxWidth, int maxHeight,
+                                           CancellationSignal cxlSig) throws Exception {
+        // Load image
+        Bitmap image = loadImageSync(uri, maxWidth, maxHeight, cxlSig);
+
+        // Create temp file
+        File tmpFile;
+        if (folder == null) {
+            tmpFile = File.createTempFile("image", "png");
+        }
+        else {
+            tmpFile = File.createTempFile("image", "png", folder);
+        }
+
+        // Save bitmap into file
+        saveImage(image, tmpFile);
+
+        return tmpFile;
+    }
 
     /**
      * Load image synchronously.  Will block current thread.

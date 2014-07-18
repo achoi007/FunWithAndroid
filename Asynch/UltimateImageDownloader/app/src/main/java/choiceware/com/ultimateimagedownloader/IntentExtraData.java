@@ -1,6 +1,7 @@
 package choiceware.com.ultimateimagedownloader;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Messenger;
 import android.os.Parcelable;

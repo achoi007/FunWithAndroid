@@ -13,7 +13,9 @@ import android.util.Log;
 import java.io.File;
 
 /**
- * Created by andyc_000 on 7/15/2014.
+ * Using a thread to extract pending intent from intent to notify when file is loaded.
+ * <p/>
+ * Created by andyc on 7/15/2014.
  */
 public class ThreadPendingIntentDownloaderService extends Service {
 
@@ -29,19 +31,19 @@ public class ThreadPendingIntentDownloaderService extends Service {
             public void run() {
 
                 try {
-                    // Downloads bitmap
+                    // Download bitmap
                     Bitmap image = DownloaderUtils.loadImageSync(intent, new CancellationSignal());
 
                     // Create result intent which contains pathname of image
                     Intent resultIntent = new Intent();
-                    File imageFile = MessageUtils.saveBitmapAsFile(image);
+                    File imageFile = File.createTempFile("image", "png");
+                    DownloaderUtils.saveImage(image, imageFile);
                     resultIntent.putExtra(IntentExtraData.IMAGE, imageFile.getPath());
 
                     // Get pending intent from bundle extra
                     PendingIntent pi = intent.getParcelableExtra(IntentExtraData.PENDING_INTENT);
                     pi.send(MyApplication.getContext(), Activity.RESULT_OK, resultIntent);
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     Log.e(TAG, ex.getMessage(), ex);
                     PendingIntent pi = intent.getParcelableExtra(IntentExtraData.PENDING_INTENT);
                     if (pi != null) {
@@ -50,14 +52,13 @@ public class ThreadPendingIntentDownloaderService extends Service {
                         try {
                             pi.send(MyApplication.getContext(), Activity.RESULT_CANCELED,
                                     resultIntent);
-                        }
-                        catch (Exception ex2) {
+                        } catch (Exception ex2) {
                             Log.e(TAG, ex.getMessage(), ex2);
                         }
                     }
                 }
 
-                // Stops if no more requests.
+                // Stop if no more requests.
                 ThreadPendingIntentDownloaderService.this.stopSelf(startId);
             }
         });
