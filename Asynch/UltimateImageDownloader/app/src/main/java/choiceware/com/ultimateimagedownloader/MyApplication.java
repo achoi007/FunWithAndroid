@@ -7,7 +7,7 @@ import android.content.Context;
  * Added function to support getting singleton context from anywhere.  getString can
  * now be called from anywhere instead of only code that has access to Context.
  * <p/>
- * Created by andyc on 7/2/2014.
+ * Created by achoi on 7/2/2014.
  */
 public class MyApplication extends Application {
 

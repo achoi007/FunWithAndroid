@@ -3,7 +3,7 @@ package choiceware.com.ultimateimagedownloader;
 import android.graphics.Bitmap;
 
 /**
- * Created by andyc on 7/1/2014.
+ * Created by achoi on 7/1/2014.
  */
 public interface IDownloaderCallback {
 

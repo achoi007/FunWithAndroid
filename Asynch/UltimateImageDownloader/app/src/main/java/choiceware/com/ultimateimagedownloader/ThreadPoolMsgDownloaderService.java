@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * A service which uses thread pool to download image and communicates result back
  * via messenger.
  *
- * Created by andyc on 7/15/2014.
+ * Created by achoi on 7/15/2014.
  */
 public class ThreadPoolMsgDownloaderService extends Service {
 

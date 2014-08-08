@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.UnknownFormatConversionException;
 
 /**
- * Created by andyc on 7/1/2014.
+ * Created by achoi on 7/1/2014.
  */
 public class DownloaderUtils {
 

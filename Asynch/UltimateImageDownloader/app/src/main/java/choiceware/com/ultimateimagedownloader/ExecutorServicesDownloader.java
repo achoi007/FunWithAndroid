@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by andyc on 7/5/2014.
+ * Created by achoi on 7/5/2014.
  */
 public class ExecutorServicesDownloader extends AbstractDownloader {
 

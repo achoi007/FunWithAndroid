@@ -5,7 +5,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 
 /**
- * Created by andyc on 7/3/2014.
+ * Created by achoi on 7/3/2014.
  */
 public class MsgHdlrThrdDownloader extends AbstractDownloader {
 

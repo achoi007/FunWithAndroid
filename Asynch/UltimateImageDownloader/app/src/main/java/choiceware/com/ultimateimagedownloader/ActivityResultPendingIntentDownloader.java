@@ -5,7 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 
 /**
- * Created by andyc on 7/16/2014.
+ * Created by achoi on 7/16/2014.
  */
 public class ActivityResultPendingIntentDownloader extends AbstractDownloader {
 

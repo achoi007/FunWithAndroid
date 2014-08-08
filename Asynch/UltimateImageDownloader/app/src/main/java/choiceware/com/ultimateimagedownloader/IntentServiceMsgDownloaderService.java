@@ -14,7 +14,7 @@ import android.util.Log;
  * An intent service to download image.  It takes Uri, max width, max height, and messenger from
  * intent and tells messenger the pathname of downloaded image.
  *
- * Created by andyc on 7/13/2014.
+ * Created by achoi on 7/13/2014.
  */
 public class IntentServiceMsgDownloaderService extends IntentService {
 

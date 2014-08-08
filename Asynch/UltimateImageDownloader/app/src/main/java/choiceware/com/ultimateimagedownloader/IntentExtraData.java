@@ -7,7 +7,7 @@ import android.os.Messenger;
 import android.os.Parcelable;
 
 /**
- * Created by alang_000 on 7/13/2014.
+ * Created by achoi on 7/13/2014.
  */
 public class IntentExtraData {
 

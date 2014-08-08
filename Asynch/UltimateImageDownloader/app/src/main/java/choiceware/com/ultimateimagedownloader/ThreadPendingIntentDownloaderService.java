@@ -15,7 +15,7 @@ import java.io.File;
 /**
  * Using a thread to extract pending intent from intent to notify when file is loaded.
  * <p/>
- * Created by andyc on 7/15/2014.
+ * Created by achoi on 7/15/2014.
  */
 public class ThreadPendingIntentDownloaderService extends Service {
 

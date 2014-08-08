@@ -6,7 +6,7 @@ import android.os.CancellationSignal;
 /**
  * Package parameters to IDownloader.load function as a single object.  Nice for things like
  * AsyncTask which only takes 1 argument
- * Created by andyc on 7/2/2014.
+ * Created by achoi on 7/2/2014.
  */
 public class LoadOptions {
 

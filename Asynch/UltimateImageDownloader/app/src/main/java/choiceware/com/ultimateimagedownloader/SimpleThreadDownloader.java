@@ -4,7 +4,7 @@ import android.net.Uri;
 
 /**
  * Using a simple thread to download image
- * Created by andyc on 7/2/2014.
+ * Created by achoi on 7/2/2014.
  */
 public class SimpleThreadDownloader extends AbstractDownloader {
 
